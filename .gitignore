@@ -7,3 +7,6 @@ __pycache__/
 instance/dev-smoke.sqlite3
 instance/smoke-web.sqlite3
 instance/final-smoke.sqlite3
+
+# Local coursework/reference files
+COMP639 Web App 2025 S2.pdf
