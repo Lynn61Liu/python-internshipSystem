@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ internship.title }}</h1>
+<p><strong>Company:</strong> {{ internship.company_name }}</p>
+<p>{{ internship.description }}</p>
+<p><strong>Your current application status:</strong> {{ internship.status or 'Not applied' }}</p>
+{% if review_mode %}
+<p><strong>Feedback:</strong> {{ internship.feedback or 'No feedback yet.' }}</p>
+{% endif %}
+
+<div class="card">
+    <h2>Your Profile Snapshot</h2>
+    <p>{{ student.full_name or 'No full name set' }}</p>
+    <p>{{ student.email }}</p>
+    <p>{{ student.university or 'No university set' }} / {{ student.course or 'No course set' }}</p>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+    <label>Cover Letter</label>
+    <textarea name="cover_letter" rows="6">{{ internship.coverletter or '' }}</textarea>
+    <label>Resume (PDF)</label>
+    <input type="file" name="resume" accept=".pdf">
+    <button type="submit">Submit application</button>
+</form>
+{% endblock %}

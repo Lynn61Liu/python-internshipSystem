@@ -1,0 +1,9 @@
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+
+# Temporary local verification databases
+instance/dev-smoke.sqlite3
+instance/smoke-web.sqlite3
+instance/final-smoke.sqlite3

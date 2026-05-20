@@ -1,0 +1,132 @@
+{% extends 'userbase.html' %} {% block title %}Admin Home{% endblock %} {# Set
+the active page to be highlighted in the navigation bar. #} {% set active_page =
+'home' %} {% block content %}
+
+<section class="container py-5">
+  <h2 class="mb-4 text-center">Available Internships</h2>
+  <!-- filter section -->
+  <form class="row g-3 mb-4" id="filterForm">
+    <div class="col-md-3">
+      <input
+        type="text"
+        id="categoryInput"
+        class="form-control"
+        placeholder="Filter by Category (Title)"
+      />
+    </div>
+    <div class="col-md-3">
+      <input
+        type="text"
+        id="locationInput"
+        class="form-control"
+        placeholder="Filter by Location"
+      />
+    </div>
+    <div class="col-md-3">
+      <input
+        type="text"
+        id="durationInput"
+        class="form-control"
+        placeholder="Filter by Duration"
+      />
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+    <div class="col-md-1">
+      <button type="button" class="btn btn-secondary" onclick="resetFilters()">
+        Reset
+      </button>
+    </div>
+  </form>
+
+  <!-- intership List display -->
+
+  {% if internships %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Company Name</th>
+          <th>Internship Title</th>
+          <th>Description</th>
+          <th>Location</th>
+          <th>Duration</th>
+
+          <!-- <th>Status</th> -->
+          <th>Applications</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for internship in internships %}
+        <tr
+          data-title="{{ internship.title | lower }}"
+          data-location="{{ internship.location | lower if internship.location else '' }}"
+          data-duration="{{ internship.duration | lower if internship.duration else '' }}"
+        >
+          <td>{{ internship.company_name }}</td>
+          <td>{{ internship.title }}</td>
+          <td>{{ internship.description }}</td>
+          <td>{{ internship.location }}</td>
+          <td>{{ internship.duration }}</td>
+
+          <td>
+            <a
+              href="{{ url_for('view_applications', internship_id=internship.internship_id) }}"
+              class="btn btn-link"
+            >
+              View
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}btn
+  <div class="alert alert-info text-center">
+    No internship listings found at the moment.
+  </div>
+  {% endif %}
+</section>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("filterForm");
+    const titleInput = document.getElementById("categoryInput");
+    const locationInput = document.getElementById("locationInput");
+    const durationInput = document.getElementById("durationInput");
+    const rows = document.querySelectorAll("tbody tr");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const titleVal = titleInput.value.toLowerCase().trim();
+      const locationVal = locationInput.value.toLowerCase().trim();
+      const durationVal = durationInput.value.toLowerCase().trim();
+
+      rows.forEach((row) => {
+        const title = row.dataset.title || "";
+        const location = row.dataset.location || "";
+        const duration = row.dataset.duration || "";
+
+        const matchesTitle = title.includes(titleVal);
+        const matchesLocation = location.includes(locationVal);
+        const matchesDuration = duration.includes(durationVal);
+
+        const shouldShow = matchesTitle && matchesLocation && matchesDuration;
+        row.style.display = shouldShow ? "" : "none";
+      });
+    });
+  });
+
+  function resetFilters() {
+    document.getElementById("categoryInput").value = "";
+    document.getElementById("locationInput").value = "";
+    document.getElementById("durationInput").value = "";
+    document
+      .querySelectorAll("tbody tr")
+      .forEach((row) => (row.style.display = ""));
+  }
+</script>
+
+{% endblock %}

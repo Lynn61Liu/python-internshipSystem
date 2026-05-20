@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Student Home</h1>
+{% for internship in internships %}
+<div class="card">
+    <h2>{{ internship.title }}</h2>
+    <p><strong>Company:</strong> {{ internship.company_name }}</p>
+    <p>{{ internship.description }}</p>
+    <p><strong>Location:</strong> {{ internship.location or 'TBC' }}</p>
+    <p><strong>Status:</strong> {{ internship.status or 'Not applied' }}</p>
+    <a class="button" href="{{ url_for('apply', internship_id=internship.internship_id) }}">View / Apply</a>
+</div>
+{% else %}
+<p>No internships found.</p>
+{% endfor %}
+{% endblock %}

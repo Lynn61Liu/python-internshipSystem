@@ -1,0 +1,194 @@
+{% extends 'userbase.html' %} {% block title %}Apply for Internship{% endblock
+%} {% block content %}
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h2>Apply for {{ internship.title }}</h2>
+
+      <form method="POST" enctype="multipart/form-data" class="mt-4">
+        <h5>Internship Details</h5>
+        <div class="mb-3">
+          <label class="form-label">Company</label>
+          <input
+            type="text"
+            class="form-control"
+            value="{{ internship.company_name }}"
+            disabled
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            value="{{ internship.title }}"
+            disabled
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" rows="4" disabled>
+{{ internship.description }}</textarea
+          >
+        </div>
+        <div class="mb-3">
+          <label class="form-label">skills_required</label>
+          <textarea class="form-control" rows="4" disabled>
+{{ internship.skills_required }}</textarea
+          >
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Location</label>
+          <input
+            type="text"
+            class="form-control"
+            value="{{ internship.location or 'N/A' }}"
+            disabled
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Duration</label>
+          <input
+            type="text"
+            class="form-control"
+            value="{{ internship.duration or 'N/A' }}"
+            disabled
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Application Deadline</label>
+          <input
+            type="text"
+            class="form-control"
+            value="{{ internship.deadline or 'N/A' }}"
+            disabled
+          />
+        </div>
+
+        <h5 class="mt-4">Your Details</h5>
+        <div class="mb-3">
+          <label class="form-label">Full Name</label>
+          <input
+            type="text"
+            class="form-control"
+            value="{{ student.full_name }}"
+            disabled
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input
+            type="text"
+            class="form-control"
+            value="{{ student.email }}"
+            disabled
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">University</label>
+          <input
+            type="text"
+            class="form-control"
+            value="{{ student.university or 'N/A' }}"
+            disabled
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Course</label>
+          <input
+            type="text"
+            class="form-control"
+            value="{{ student.course or 'N/A' }}"
+            disabled
+          />
+        </div>
+
+        <h5 class="mt-4">Resume</h5>
+        {% if student.resume_path %}
+        <p>
+          Current Resume:
+          <a
+            href="{{ url_for('static', filename=student.resume_path) }}"
+            target="_blank"
+            >View</a
+          >
+        </p>
+        {% endif %}
+        <div class="mb-3">
+          <input
+            class="form-control"
+            type="file"
+            name="resume"
+            accept="application/pdf"
+            {%
+            if
+            review_mode
+            %}
+            style="display: none"
+            {%
+            endif
+            %}
+          />
+          <div
+            class="form-text"
+            {%
+            if
+            review_mode
+            %}
+            style="display: none"
+            {%
+            endif
+            %}
+          >
+            Upload PDF only. Leave blank to keep current resume.
+          </div>
+        </div>
+
+        <h5 class="mt-4">Cover Letter / Notes</h5>
+        <div class="mb-4">
+          <textarea
+            class="form-control"
+            name="cover_letter"
+            rows="5"
+            placeholder="Write something..."
+            {%
+            if
+            review_mode
+            %}
+            readonly
+            {%
+            else
+            %}
+            required
+            {%
+            endif
+            %}
+          >
+{% if internship.coverletter %}{{ internship.coverletter }}{% endif %}</textarea
+          >
+        </div>
+        <!-- feedback section -->
+        {% if review_mode %}
+        <h5 class="mt-4">Feedback</h5>
+        <div class="mb-4">
+          <textarea class="form-control" name="feedback" rows="5" readonly>
+{{ internship.feedback }}</textarea
+          >
+        </div>
+        {% endif %}
+        <div class="d-grid">
+          {% if review_mode %}
+          <a href="{{ url_for('customer_home') }}" class="btn btn-primary"
+            >Back</a
+          >
+          {% else %}
+          <button type="submit" class="btn btn-primary">
+            Submit Application
+          </button>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

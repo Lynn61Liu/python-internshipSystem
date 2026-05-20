@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Admin Home</h1>
+<p><a class="button" href="{{ url_for('user_manage') }}">Manage users</a></p>
+{% for internship in internships %}
+<div class="card">
+    <h2>{{ internship.title }}</h2>
+    <p><strong>Company:</strong> {{ internship.company_name }}</p>
+    <p>{{ internship.description }}</p>
+</div>
+{% endfor %}
+{% endblock %}

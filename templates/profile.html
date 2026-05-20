@@ -1,0 +1,376 @@
+{% extends 'userbase.html' %} {% block title %}User Profile{% endblock %} {# Set
+the active page to be highlighted in the navigation bar. #} {% set active_page =
+'profile' %} {% block content %}
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+<section class="container py-5">
+  <div class="row justify-content-center text-center">
+    <div class="col-lg-7">
+      <h1>{{ profile.role.title() }} Profile</h1>
+      <p class="lead text-muted">Here's everything we know about you.</p>
+    </div>
+  </div>
+</section>
+
+<section class="container mb-3">
+  <form
+    method="POST"
+    action="{{ url_for('update_profile') }}"
+    enctype="multipart/form-data"
+  >
+    {% if profile.role == 'Student' %}
+    <!--IMAGE-->
+    <div class="row justify-content-center">
+      <div class="col-lg-6 mb-3 text-center">
+        <label class="form-label">Profile Photo</label>
+
+        {% if profile.profile_image %}
+        <div class="mb-3">
+          <img
+            src="{{ url_for('static', filename=profile.profile_image) }}"
+            alt="Profile Photo"
+            class="rounded-circle border"
+            style="width: 150px; height: 150px; object-fit: cover"
+            id="profile-photo-preview"
+          />
+        </div>
+        <button
+          type="button"
+          class="btn btn-danger editable-field mb-3"
+          id="delete-photo-btn"
+          style="display: none"
+        >
+          Delete Photo
+        </button>
+        <input
+          type="hidden"
+          name="delete_photo"
+          id="delete-photo-flag"
+          value="false"
+        />
+
+        {% else %}
+        <p class="text-muted">No photo uploaded.</p>
+        <img
+          id="profile-photo-preview"
+          src="{{ url_for('static', filename='images/default.jpg') }}"
+          class="rounded-circle border"
+          style="width: 150px; height: 150px; object-fit: cover"
+        />
+        {% endif %}
+
+        <input
+          type="file"
+          class="form-control editable-field"
+          id="photo"
+          name="photo"
+          accept="image/*"
+          disabled
+        />
+      </div>
+      <!---->
+      <div class="row justify-content-center">
+        <div class="col-lg-3 mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            value="{{ profile.username }}"
+            disabled
+          />
+        </div>
+        <div class="col-lg-3 mb-3">
+          <label for="useremail" class="form-label">Email</label>
+          <input
+            type="text"
+            class="form-control"
+            id="useremail"
+            name="useremail"
+            value="{{ profile.email }}"
+            disabled
+          />
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-3 mb-3">
+          <label for="full_name" class="form-label">Full Name</label>
+          <input
+            type="text"
+            class="form-control editable-field"
+            id="full_name"
+            name="full_name"
+            value="{{ profile.full_name }}"
+            disabled
+          />
+        </div>
+        <div class="col-lg-3 mb-3">
+          <label for="university" class="form-label">University</label>
+          <input
+            type="text"
+            class="form-control editable-field"
+            id="university"
+            name="university"
+            value="{{ profile.university }}"
+            disabled
+          />
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-6 mb-3">
+          <label for="course" class="form-label">Course</label>
+          <input
+            type="text"
+            class="form-control editable-field"
+            id="course"
+            name="course"
+            value="{{ profile.course }}"
+            disabled
+          />
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Resume</label>
+
+          <!-- PDF Preview -->
+          {% if profile.resume_path %}
+          <div
+            id="resume-preview"
+            class="border rounded mb-2"
+            style="height: 400px"
+          >
+            <iframe
+              src="{{ url_for('static', filename=profile.resume_path) }}"
+              width="100%"
+              height="100%"
+              style="border: none"
+            >
+            </iframe>
+          </div>
+          {% else %}
+          <p class="text-muted">No resume uploaded.</p>
+          {% endif %}
+
+          <!-- Upload Input (disabled by default) -->
+          <input
+            type="file"
+            class="form-control editable-field"
+            id="resume"
+            name="resume"
+            accept="application/pdf"
+            disabled
+          />
+        </div>
+      </div>
+      {% endif %} {% if profile.role == 'Employer' %}
+      <div class="row justify-content-center">
+        <div class="col-lg-6 mb-3 text-center">
+          <label class="form-label">Company Logo</label>
+
+          {% if profile.logo_path %}
+          <div class="mb-3">
+            <img
+              src="{{ url_for('static', filename=profile.logo_path) }}"
+              alt="Company Logo"
+              class="border"
+              style="width: 150px; height: 150px; object-fit: contain"
+              id="company-logo-preview"
+            />
+          </div>
+          <input
+            type="hidden"
+            name="delete_logo"
+            id="delete-logo-flag"
+            value="false"
+          />
+          <button
+            type="button"
+            class="btn btn-danger editable-field mb-3"
+            id="delete-logo-btn"
+            style="display: none"
+          >
+            Delete Logo
+          </button>
+          {% else %}
+          <p class="text-muted">No logo uploaded.</p>
+          {% endif %}
+
+          <input
+            type="file"
+            class="form-control editable-field"
+            id="company_logo"
+            name="company_logo"
+            accept="image/*"
+            disabled
+          />
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-3 mb-3">
+          <label for="company_name" class="form-label">Company Name</label>
+          <input
+            type="text"
+            class="form-control editable-field"
+            id="company_name"
+            name="company_name"
+            value="{{ profile.company_name }}"
+            disabled
+          />
+        </div>
+        <div class="col-lg-3 mb-3">
+          <label for="website" class="form-label">Company Website</label>
+          <input
+            type="url"
+            class="form-control editable-field"
+            id="website"
+            name="website"
+            value="{{ profile.website }}"
+            disabled
+          />
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-6 mb-3">
+          <label for="company_description" class="form-label"
+            >Company Description</label
+          >
+          <textarea
+            class="form-control editable-field"
+            id="company_description"
+            name="company_description"
+            rows="4"
+            disabled
+          >
+{{ profile.company_description }}</textarea
+          >
+        </div>
+      </div>
+
+      {% endif %}
+      <!-- role of admin -->
+      {% if profile.role == 'Admin' %}
+      <!--IMAGE-->
+      <div class="row justify-content-center">
+        <div class="col-lg-6 mb-3 text-center">
+          <label class="form-label">Profile Image</label>
+
+          {% if profile.profile_image %}
+          <div class="mb-3">
+            <img
+              src="{{ url_for('static', filename=profile.profile_image) }}"
+              alt="Profile Photo"
+              class="rounded-circle border"
+              style="width: 150px; height: 150px; object-fit: cover"
+              id="profile-photo-preview"
+            />
+          </div>
+          <button
+            type="button"
+            class="btn btn-danger editable-field mb-3"
+            id="delete-image-btn"
+            name="delete-image-btn"
+            style="display: none"
+           
+          >
+            Delete image
+          </button>
+          <input
+            type="hidden"
+            name="delete-image-flag"
+            id="delete-image-flag"
+            value="false"
+          />
+
+          {% else %}
+          <p class="text-muted">No photo uploaded.</p>
+          
+          {% endif %}
+
+          <input
+            type="file"
+            class="form-control editable-field"
+            id="adminPhoto"
+            name="adminPhoto"
+            accept="image/*"
+            disabled
+          />
+        </div>
+        <!---->
+        <div class="row justify-content-center">
+          <div class="col-lg-3 mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              name="username"
+              value="{{ profile.username }}"
+              disabled
+            />
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label for="useremail" class="form-label">Email</label>
+            <input
+              type="text"
+              class="form-control"
+              id="useremail"
+              name="useremail"
+              value="{{ profile.email }}"
+              disabled
+            />
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-3 mb-3">
+            <label for="full_name" class="form-label">Full Name</label>
+            <input
+              type="text"
+              class="form-control editable-field"
+              id="full_name"
+              name="full_name"
+              value="{{ profile.full_name }}"
+              disabled
+            />
+          </div>
+
+          <div class="col-lg-3 mb-3">
+            <label for="full_name" class="form-label">Status</label>
+            <input
+              type="text"
+              class="form-control "
+              id="Status"
+              name="Status"
+              value="{{ profile.status }}"
+              disabled
+            />
+          
+        </div>
+      </div>
+      <!-- row of status
+       -->
+
+      {% endif %}
+
+      <!-- option btn -->
+      <div class="row justify-content-center mt-4">
+        <div class="col-lg-6 d-flex gap-4 justify-content-end">
+          <button type="button" class="btn btn-primary" id="edit-btn">
+            Edit
+          </button>
+
+          <div id="edit-actions" style="display: none">
+            <button type="submit" class="btn btn-primary me-3">Save</button>
+            <button type="button" class="btn btn-primary" id="cancel-btn">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>
+{% endblock %}

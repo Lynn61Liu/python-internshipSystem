@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Profile</h1>
+<div class="card">
+    <p><strong>Username:</strong> {{ profile.username }}</p>
+    <p><strong>Full name:</strong> {{ profile.full_name or 'Not set' }}</p>
+    <p><strong>Email:</strong> {{ profile.email }}</p>
+    <p><strong>Role:</strong> {{ profile.role }}</p>
+    {% if profile.role == 'Student' %}
+    <p><strong>University:</strong> {{ profile.university or 'Not set' }}</p>
+    <p><strong>Course:</strong> {{ profile.course or 'Not set' }}</p>
+    {% elif profile.role == 'Employer' %}
+    <p><strong>Company:</strong> {{ profile.company_name or 'Not set' }}</p>
+    <p><strong>Website:</strong> {{ profile.website or 'Not set' }}</p>
+    {% endif %}
+</div>
+{% endblock %}

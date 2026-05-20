@@ -1,0 +1,211 @@
+{% extends 'userbase.html' %} {% block title %}Staff Home{% endblock %} {# Set
+the active page to be highlighted in the navigation bar. #} {% set active_page =
+'home' %} {% block content %}
+
+<!-- import js -->
+<script src="{{ url_for('static', filename='js/view_applications.js') }}"></script>
+<!-- add filt -->
+<section class="container py-5 text-center">
+  <form class="row g-3 align-items-center" id="filterForm">
+    <div class="col-md-4">
+      <input type="text" id="searchInput" class="form-control" placeholder="Search by name or internship title" />
+    </div>
+    <div class="col-md-3">
+      <select id="statusFilter" class="form-select">
+        <option value="">All Status</option>
+        <option value="pending">Pending</option>
+        <option value="accepted">Accepted</option>
+        <option value="rejected">Rejected</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+    <div class="col-md-2">
+      <button type="button" class="btn btn-secondary" onclick="resetFilters()">Reset</button>
+    </div>
+  </form>
+</section>
+
+<!-- display applications in a table  -->
+<section class="container py-5 text-center">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <h1>Application Listing</h1>
+      {% if applications|length == 0 %}
+  <div class="alert alert-info mt-4" role="alert">
+    No applications found.
+  </div>
+{% else %}
+      <table class="table table-bordered mt-4">
+        <thead class="table-light">
+          <tr>
+            <th>Internship Title</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Full Name</th>
+            <th>University</th>
+            <th>Course</th>
+            <th>Resume</th>
+            <th>Cover Letter</th>
+           
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for app in applications %}
+          <tr>
+            <td>{{ app.internship_title }}</td>
+            <td>{{ app.username }}</td>
+            <td>{{ app.email }}</td>
+            <td>{{ app.full_name or 'N/A' }}</td>
+            <td>{{ app.university or 'N/A' }}</td>
+            <td>{{ app.course or 'N/A' }}</td>
+            <td>
+              {% if app.resume_path %}
+              <a
+                href="{{ url_for('static', filename=app.resume_path) }}"
+                target="_blank"
+                >View</a
+              >
+              {% else %} N/A {% endif %}
+            </td>
+            <td>
+  {% if app.coverletter %}
+  <a
+  
+    href=""
+    data-bs-toggle="modal"
+    data-bs-target="#coverLetterModal"
+    data-coverletter="{{ app.coverletter | e }}"
+  >
+    View
+            </a>
+  {% else %}
+  <span class="text-muted">N/A</span>
+  {% endif %}
+</td>
+            
+            <td>
+              <button
+  class="btn btn-sm
+    {% if app.status == 'pending' %}
+      btn-warning
+    {% elif app.status == 'accepted' %}
+      btn-success
+    {% elif app.status == 'rejected' %}
+      btn-danger
+    {% else %}
+      btn-secondary
+    {% endif %}"
+  data-bs-toggle="modal"
+  data-bs-target="#statusModal"
+  data-student-id="{{ app.student_id }}"
+  data-internship-id="{{ app.internship_id }}"
+  data-feedback="{{ app.feedback or '' }}"
+ data-status="{{ app.status | lower }}"
+>
+  {{ app.status }}
+</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% endif %}
+    </div>
+  </div>
+</section>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="statusModal"
+  tabindex="-1"
+  aria-labelledby="statusModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-start">
+      <div class="modal-header">
+        <h5 class="modal-title" id="statusModalLabel">
+          Update Application Status
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="statusForm">
+          <input type="hidden" name="student_id" id="modal-student-id" />
+          <input type="hidden" name="internship_id" id="modal-internship-id" />
+          <div class="mb-3">
+            <label for="feedback" class="form-label">Feedback</label>
+            <textarea
+              class="form-control"
+              id="feedback"
+              name="feedback"
+              rows="3"
+            ></textarea>
+  </textarea
+            >
+          </div>
+          <div class="mb-3 d-flex justify-content-around">
+            <button
+              type="button"
+              class="btn btn-success"
+              onclick="submitStatus('accepted')"
+            >
+              Accept
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="submitStatus('rejected')"
+            >
+              Reject
+            </button>
+            <button
+    type="button"
+    class="btn btn-warning"
+    onclick="submitStatus('pending')"
+  >
+    Pending
+  </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- coverletter modal -->
+ <div
+  class="modal fade"
+  id="coverLetterModal"
+  tabindex="-1"
+  aria-labelledby="coverLetterModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="coverLetterModalLabel">Cover Letter</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <pre id="coverLetterContent" style="white-space: pre-wrap;"></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

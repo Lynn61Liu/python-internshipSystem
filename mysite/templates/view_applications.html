@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Applications</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Feedback</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for application in applications %}
+        <tr>
+            <td>{{ application.full_name or application.username }}</td>
+            <td>{{ application.email }}</td>
+            <td>{{ application.status }}</td>
+            <td>{{ application.feedback or '' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4">No applications yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
