@@ -41,6 +41,24 @@ Open:
 
 `http://127.0.0.1:5000`
 
+## 运行与部署
+
+详细的本地运行和 Docker 部署说明已补充在：
+
+`docs/run-and-deploy.md`
+
+本仓库也已配置 GitHub Actions 自动构建并推送镜像到 GitHub Container Registry。
+
+默认推送镜像名称为：
+
+`ghcr.io/lynn61liu/python-internshipsystem:latest`
+
+你可以在服务器上使用以下命令拉取镜像：
+
+```bash
+docker pull ghcr.io/lynn61liu/python-internshipsystem:latest
+```
+
 ## Demo Accounts
 
 - Student: `student1` / `Password123`

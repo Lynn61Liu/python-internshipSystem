@@ -1,50 +1,45 @@
-{% extends 'userbase.html' %} {% block title %}Admin Home{% endblock %} {# Set
-the active page to be highlighted in the navigation bar. #} {% set active_page =
-'home' %} {% block content %}
+{% extends 'userbase.html' %} {% block title %}Admin Home{% endblock %}
+{% set active_page = 'home' %} {% block content %}
 
-<section class="container py-5">
-  <h2 class="mb-4 text-center">Available Internships</h2>
-  <!-- filter section -->
-  <form class="row g-3 mb-4" id="filterForm">
+<section class="container py-4 py-lg-5">
+  <div class="page-hero p-4 p-lg-5 mb-4">
+    <p class="hero-kicker mb-2">Admin overview</p>
+    <div class="d-lg-flex justify-content-between align-items-end gap-4">
+      <div>
+        <h1 class="fw-bold mb-2">Internship marketplace</h1>
+        <p class="text-muted mb-lg-0">Review all listings and jump into candidate applications.</p>
+      </div>
+      <div class="stat-tile p-3 mt-3 mt-lg-0 text-center">
+        <div class="icon-badge mb-2"><i class="bi bi-briefcase"></i></div>
+        <div class="fs-4 fw-bold">{{ internships|length }}</div>
+        <div class="text-muted small">Listings</div>
+      </div>
+    </div>
+  </div>
+
+  <form class="filter-bar bg-white border p-3 row g-3 mb-4 align-items-center" id="filterForm">
     <div class="col-md-3">
-      <input
-        type="text"
-        id="categoryInput"
-        class="form-control"
-        placeholder="Filter by Category (Title)"
-      />
+      <input type="text" id="categoryInput" class="form-control" placeholder="Filter by Title" />
     </div>
     <div class="col-md-3">
-      <input
-        type="text"
-        id="locationInput"
-        class="form-control"
-        placeholder="Filter by Location"
-      />
+      <input type="text" id="locationInput" class="form-control" placeholder="Filter by Location" />
     </div>
     <div class="col-md-3">
-      <input
-        type="text"
-        id="durationInput"
-        class="form-control"
-        placeholder="Filter by Duration"
-      />
+      <input type="text" id="durationInput" class="form-control" placeholder="Filter by Duration" />
     </div>
     <div class="col-md-2">
-      <button type="submit" class="btn btn-primary">Search</button>
+      <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search"></i>Search</button>
     </div>
     <div class="col-md-1">
-      <button type="button" class="btn btn-secondary" onclick="resetFilters()">
-        Reset
+      <button type="button" class="btn btn-secondary w-100" onclick="resetFilters()">
+        <i class="bi bi-arrow-counterclockwise"></i>Reset
       </button>
     </div>
   </form>
 
-  <!-- intership List display -->
-
   {% if internships %}
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover">
+  <div class="content-panel table-responsive p-3">
+    <table class="table table-bordered table-hover align-middle mb-0">
       <thead class="table-light">
         <tr>
           <th>Company Name</th>
@@ -52,8 +47,6 @@ the active page to be highlighted in the navigation bar. #} {% set active_page =
           <th>Description</th>
           <th>Location</th>
           <th>Duration</th>
-
-          <!-- <th>Status</th> -->
           <th>Applications</th>
         </tr>
       </thead>
@@ -64,18 +57,14 @@ the active page to be highlighted in the navigation bar. #} {% set active_page =
           data-location="{{ internship.location | lower if internship.location else '' }}"
           data-duration="{{ internship.duration | lower if internship.duration else '' }}"
         >
-          <td>{{ internship.company_name }}</td>
-          <td>{{ internship.title }}</td>
+          <td><i class="bi bi-building text-primary me-1"></i>{{ internship.company_name }}</td>
+          <td class="fw-semibold">{{ internship.title }}</td>
           <td>{{ internship.description }}</td>
           <td>{{ internship.location }}</td>
           <td>{{ internship.duration }}</td>
-
           <td>
-            <a
-              href="{{ url_for('view_applications', internship_id=internship.internship_id) }}"
-              class="btn btn-link"
-            >
-              View
+            <a href="{{ url_for('view_applications', internship_id=internship.internship_id) }}" class="btn btn-sm btn-outline-primary">
+              <i class="bi bi-folder2-open"></i>View
             </a>
           </td>
         </tr>
@@ -83,12 +72,11 @@ the active page to be highlighted in the navigation bar. #} {% set active_page =
       </tbody>
     </table>
   </div>
-  {% else %}btn
-  <div class="alert alert-info text-center">
-    No internship listings found at the moment.
-  </div>
+  {% else %}
+  <div class="alert alert-info text-center">No internship listings found at the moment.</div>
   {% endif %}
 </section>
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("filterForm");
@@ -108,12 +96,11 @@ the active page to be highlighted in the navigation bar. #} {% set active_page =
         const title = row.dataset.title || "";
         const location = row.dataset.location || "";
         const duration = row.dataset.duration || "";
+        const shouldShow =
+          title.includes(titleVal) &&
+          location.includes(locationVal) &&
+          duration.includes(durationVal);
 
-        const matchesTitle = title.includes(titleVal);
-        const matchesLocation = location.includes(locationVal);
-        const matchesDuration = duration.includes(durationVal);
-
-        const shouldShow = matchesTitle && matchesLocation && matchesDuration;
         row.style.display = shouldShow ? "" : "none";
       });
     });
@@ -123,9 +110,7 @@ the active page to be highlighted in the navigation bar. #} {% set active_page =
     document.getElementById("categoryInput").value = "";
     document.getElementById("locationInput").value = "";
     document.getElementById("durationInput").value = "";
-    document
-      .querySelectorAll("tbody tr")
-      .forEach((row) => (row.style.display = ""));
+    document.querySelectorAll("tbody tr").forEach((row) => (row.style.display = ""));
   }
 </script>
 

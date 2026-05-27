@@ -1,17 +1,31 @@
-{% extends 'userbase.html' %} {% block title %}Staff Home{% endblock %} {# Set
-the active page to be highlighted in the navigation bar. #} {% set active_page =
-'home' %} {% block content %}
+{% extends 'userbase.html' %} {% block title %}Staff Home{% endblock %}
+{% set active_page = 'home' %} {% block content %}
 
-<section class="container py-5 text-center">
-  <div class="row justify-content-center">
-    <div class="col-lg-7">
-      <h1>Job Listing</h1>
+<section class="container py-4 py-lg-5">
+  <div class="page-hero row g-0 mb-4">
+    <div class="col-lg-7 p-4 p-lg-5">
+      <p class="hero-kicker mb-2">Employer dashboard</p>
+      <h1 class="fw-bold mb-3">Manage your internship listings</h1>
+      <p class="text-muted mb-0">
+        Track posted roles, review applicant pools, and move candidates through decisions.
+      </p>
+    </div>
+    <div class="col-lg-5 job-visual d-flex align-items-center p-4">
+      <div class="job-visual-card p-3 w-100">
+        <div class="d-flex align-items-center justify-content-between">
+          <div>
+            <div class="fw-bold fs-4">{{ intershipList|length }}</div>
+            <div class="small opacity-75">Active listings</div>
+          </div>
+          <i class="bi bi-kanban fs-1"></i>
+        </div>
+      </div>
     </div>
   </div>
 
   {% if intershipList %}
-  <div class="table-responsive mt-4">
-    <table class="table table-bordered table-hover">
+  <div class="content-panel table-responsive p-3">
+    <table class="table table-bordered table-hover align-middle mb-0">
       <thead class="table-light">
         <tr>
           <th>Company Name</th>
@@ -28,21 +42,21 @@ the active page to be highlighted in the navigation bar. #} {% set active_page =
       <tbody>
         {% for internship in intershipList %}
         <tr>
-          <td>{{ internship.company_name }}</td>
-          <td>{{ internship.title }}</td>
+          <td><i class="bi bi-building text-primary me-1"></i>{{ internship.company_name }}</td>
+          <td class="fw-semibold">{{ internship.title }}</td>
           <td>{{ internship.location }}</td>
           <td>{{ internship.duration }}</td>
           <td>{{ internship.skills_required }}</td>
           <td>{{ internship.deadline }}</td>
           <td>{{ internship.stipend }}</td>
-          <td>{{ internship.number_of_opening }}</td>
+          <td><span class="badge text-bg-light">{{ internship.number_of_opening }}</span></td>
           <td>
             <a
               class="btn btn-sm btn-primary"
               href="{{ url_for('view_applications', internship_id=internship.internship_id) }}"
               role="button"
             >
-              View
+              <i class="bi bi-people"></i>View
             </a>
           </td>
         </tr>

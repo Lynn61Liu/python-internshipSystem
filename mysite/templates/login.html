@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Login</h1>
-<p class="muted">Demo accounts: `student1`, `employer1`, `admin1` with password `Password123`.</p>
+<div class="notice">
+    <strong>Demo accounts</strong>
+    <p>student1 / Password123 -> /customer/home</p>
+    <p>employer1 / Password123 -> /staff/home</p>
+    <p>admin1 / Password123 -> /admin/home</p>
+</div>
 {% if username_invalid %}<p class="error">Username not found.</p>{% endif %}
 {% if password_invalid %}<p class="error">Password is incorrect.</p>{% endif %}
 <form method="post">

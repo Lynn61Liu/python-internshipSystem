@@ -1,9 +1,10 @@
 {% extends 'userbase.html' %} {% block title %}Apply for Internship{% endblock
 %} {% block content %}
-<section class="container py-5">
+<section class="container py-4 py-lg-5">
   <div class="row justify-content-center">
-    <div class="col-lg-8">
-      <h2>Apply for {{ internship.title }}</h2>
+    <div class="col-lg-8 content-panel p-4 p-lg-5">
+      <p class="hero-kicker mb-2">Application</p>
+      <h2 class="fw-bold">Apply for {{ internship.title }}</h2>
 
       <form method="POST" enctype="multipart/form-data" class="mt-4">
         <h5>Internship Details</h5>
@@ -110,7 +111,7 @@
           <a
             href="{{ url_for('static', filename=student.resume_path) }}"
             target="_blank"
-            >View</a
+            ><i class="bi bi-file-earmark-pdf me-1"></i>View</a
           >
         </p>
         {% endif %}
@@ -179,11 +180,11 @@
         <div class="d-grid">
           {% if review_mode %}
           <a href="{{ url_for('customer_home') }}" class="btn btn-primary"
-            >Back</a
+            ><i class="bi bi-arrow-left"></i>Back</a
           >
           {% else %}
           <button type="submit" class="btn btn-primary">
-            Submit Application
+            <i class="bi bi-send"></i>Submit Application
           </button>
           {% endif %}
         </div>

@@ -1,0 +1,157 @@
+:root {
+  --job-primary-soft: rgba(13, 110, 253, 0.1);
+  --job-primary-line: rgba(13, 110, 253, 0.18);
+  --job-ink: #172033;
+  --job-muted: #637083;
+  --job-surface: rgba(255, 255, 255, 0.94);
+}
+
+body.job-shell,
+body.auth-shell {
+  min-height: 100vh;
+  color: var(--job-ink);
+  background:
+    linear-gradient(135deg, rgba(13, 110, 253, 0.1), rgba(255, 255, 255, 0.7) 42%),
+    linear-gradient(90deg, rgba(13, 110, 253, 0.07) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(13, 110, 253, 0.06) 1px, transparent 1px),
+    #f7faff;
+  background-size: auto, 36px 36px, 36px 36px, auto;
+}
+
+.navbar {
+  box-shadow: 0 10px 24px rgba(13, 110, 253, 0.18);
+}
+
+.navbar-brand {
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.page-hero,
+.auth-panel,
+.content-panel,
+.job-card,
+.stat-tile {
+  background: var(--job-surface);
+  border: 1px solid rgba(13, 110, 253, 0.12);
+  box-shadow: 0 18px 44px rgba(28, 50, 94, 0.09);
+}
+
+.page-hero {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.hero-kicker {
+  color: var(--bs-primary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.job-visual {
+  min-height: 220px;
+  background:
+    linear-gradient(135deg, rgba(13, 110, 253, 0.92), rgba(13, 110, 253, 0.58)),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.14) 0 1px, transparent 1px 18px);
+  color: #fff;
+}
+
+.job-visual-card {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+}
+
+.filter-bar,
+.content-panel {
+  border-radius: 8px;
+}
+
+.job-card {
+  border-radius: 8px;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.job-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 48px rgba(28, 50, 94, 0.13);
+}
+
+.stat-tile {
+  border-radius: 8px;
+}
+
+.icon-badge {
+  align-items: center;
+  background: var(--job-primary-soft);
+  border: 1px solid var(--job-primary-line);
+  border-radius: 8px;
+  color: var(--bs-primary);
+  display: inline-flex;
+  height: 2.4rem;
+  justify-content: center;
+  width: 2.4rem;
+}
+
+.meta-pill {
+  align-items: center;
+  background: #f4f7fb;
+  border: 1px solid #e8eef7;
+  border-radius: 999px;
+  color: var(--job-muted);
+  display: inline-flex;
+  font-size: 0.9rem;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+}
+
+.table {
+  --bs-table-bg: #fff;
+}
+
+.table thead th {
+  color: #445064;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.btn {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.auth-shell .auth-panel {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.auth-side {
+  background:
+    linear-gradient(135deg, rgba(13, 110, 253, 0.95), rgba(13, 110, 253, 0.64)),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0 1px, transparent 1px 20px);
+  color: #fff;
+}
+
+.auth-metric {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+@media (max-width: 767.98px) {
+  .page-hero,
+  .auth-panel,
+  .content-panel {
+    border-radius: 0;
+  }
+
+  .job-visual {
+    min-height: 180px;
+  }
+}
